@@ -65,8 +65,8 @@ while True:
          |  |                                                                                            |  |
          |  |   What do you want to do?                                                                  |  |
          |  |   ◙ Enter  1. To Display Laptop Details                                                    |  |
-         |  |   ◙ Enter  2. To Add Stok Of Laptops                                                       |  |
-         |  |   ◙ Enter  3. To Sell Laptops                                                              |  |
+         |  |   ◙ Enter  2. To Sell Laptops                                                              |  |
+         |  |   ◙ Enter  3. To Add Stok Of Laptops                                                       |  |
          |  |   ◙ Enter  4. To Exit Programe                                                             |  |
          |  |____________________________________________________________________________________________|  |
          |__________________________________________________________________________________________________|''')

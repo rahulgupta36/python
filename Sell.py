@@ -8,11 +8,14 @@ def sellDevices():
         if deviceDetails[i][0] == selectedDevice:
             newQuantity = int(input("Enter the new quantity: "))
             initialQuantity=int(deviceDetails[i][4])
-            deviceDetails[i][4] = str(initialQuantity-newQuantity)
+            if newQuantity>initialQuantity:
+                print("Sorry your required stock is more than we have")
+            else:
+                deviceDetails[i][4] = str(initialQuantity-newQuantity)
             break
     option="yes"
     while option.lower()=="yes":
-        option=input("Do you want to sell more stock?(yes/no)")
+        option=input("Do you want to sell another stock?(yes/no)")
         if option.lower()=="yes":
             
             # Ask user to select a device and update its quantity
@@ -21,7 +24,10 @@ def sellDevices():
                 if deviceDetails[i][0] == selectedDevice:
                     newQuantity = int(input("Enter the new quantity: "))
                     initialQuantity=int(deviceDetails[i][4])
-                    deviceDetails[i][4] = str(initialQuantity-newQuantity)
+                    if newQuantity>initialQuantity:
+                        print("Sorry your required stock is more than we have")
+                    else:
+                        deviceDetails[i][4] = str(initialQuantity-newQuantity)
                     break
                 # Save the updated data to the file
             with open('files.txt', 'w') as f:
