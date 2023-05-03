@@ -41,6 +41,7 @@
 
 
 
+# import datetime
 # from ReadTxt import readTxt
 # def sellDevices():
 
@@ -216,13 +217,14 @@
 
 
 
-
+import datetime
 from typing import ItemsView
 from Display import display
 from ReadTxt import readTxt
 
+
 def sellDevices():
-            
+    display()
     # Read the data from file
     try:
         deviceDetails = readTxt()
@@ -230,52 +232,59 @@ def sellDevices():
         print("File not found.")
         return
     while True:
-        clientName=input("Please enter Client Name")
+        clientName=input("Please enter Client Name: ")
         if clientName=="":
             print("Please Fill details")       
         else:
             break
     while True:
-        clientAddress=input("Please Enter Client Address")
+        clientAddress=input("Please Enter Client Address: ")
         if clientAddress=="":
             print("Please Fill Details")
         else:
             break
     while True:
-        clientPhone=input("Please Enter Client Phone Number")
-        if clientPhone=="":
-            print("Phone Number Is Mandatory to fill")
-        else:
-            break
+        try:
+            clientPhone=int(input("Please Enter Client Phone Number: "))
+            if clientPhone=="":
+                print("Phone Number Is Mandatory to fill")
+            else:
+                break
+        except ValueError:
+            print("Please Enter Integer Number")
+    
     while True:
-        shippingCharge=input("Do you want Home Delivery?")
+        shipping_cost = 0
+        shippingCharge=input("Do you want Home Delivery?, answer in (yes/no): ")
         if shippingCharge=="":
             print("Shipping Charge Is Mandatory To be Filled")
         elif shippingCharge.lower()=="yes":
             print("Shipping charge will be Added")
             print("Thank You For Filling All")
+            shipping_cost = 150
             break
         elif shippingCharge.lower()=="no":
             print("No shipping charge will be added")
             print("Thank You For Filling All")
+            shipping_cost = 0
             break
         else:
             print("please answer in yes or no")
     # Display the devices
-    display()
+
 
     # Ask user to select a device and update its quantity
     while True:
-        mainMenu=input("Enter r to return")
-        if mainMenu=="r":
-            print("You've Returned")
-            break 
-        selectedDevice = input("Enter the serial number of the device you want to sell:\n")
+        # mainMenu=input("Enter r to return or Enter Any Other Key For Further Transaction: ")
+        # if mainMenu=="r":
+        #     print("You've Returned")
+        #     break 
+        selectedDevice = input("Enter the serial number of the device you want to sell: ")
         for i in range(0, len(deviceDetails)):
             if deviceDetails[i][0] == selectedDevice:
                 while True:
                     try:
-                        newQuantity = int(input("Enter the quantity:\n"))
+                        newQuantity = int(input("Enter the quantity: "))
                         initialQuantity = int(deviceDetails[i][4])
                         if initialQuantity < newQuantity:
                             print("Sorry, the entered quantity is more than available.")
@@ -292,18 +301,80 @@ def sellDevices():
 
         # Ask user if they want to sell more devices
         while True:
-            option = input("Do you want to sell more stock? (yes/no)\n")
+            option = input("Do you want to sell more stock? (yes/no): ")
             if option.lower() == "yes":
                 break
             elif option.lower() == "no":
                 print("Thank you.")
-                # Save the updated data to the file
-                with open('files.txt', 'w') as f:
-                    for row in deviceDetails:
-                        f.write(','.join(row[1:]) + '\n')
-                return
-            else:
+            else:   
                 print("Please answer with yes or no.")
+            
+                        # totalPrice=newQuantity*deviceDetails[i][3]
+            productName= deviceDetails[i][1]
+            laptop_brand = deviceDetails[i][2]
+            laptop_price = deviceDetails[i][3].replace('$','')
+            laptop_quantity =  newQuantity 
+            total_price = newQuantity * int(laptop_price)
+            total = 0
+            grand_total = 0
+                        # initialize the list to store purchased laptops
+            purchased_laptops = []
+                    
+            total += total_price
+            grand_total = total + shipping_cost
+            laptop_total_price = grand_total
+                            
+                            # Write customer's details to file
+            now = datetime.datetime.now()
+                            # date_String = now.strftime('%Y-%m-%d %H:%M:%S')
+            file_name = f"Sold_to_{clientName}.txt"
+            with open(file_name, "w") as sale_file:
+                sale_file.write(f"|{' '*2}Customer Name: {clientName}\n")
+                sale_file.write(f"|{' '*2}Address: {clientAddress}\n")
+                sale_file.write(f"|{' '*2}Phone number: {clientPhone}\n")
+                sale_file.write(f"|{' '*2}Date: {now.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                            # Write order summary to file
+                sale_file.write("________________________________________________________________________________________________\n")
+                sale_file.write("| Laptop          | Brand          | Price per unit (USD) | Quantity       | Total price (USD) |\n")
+                sale_file.write("________________________________________________________________________________________________\n")
+                                # Write details of purchased laptops to file
+                for purchased_laptop in purchased_laptops:
+                    productName = purchased_laptop[0]
+                    laptop_brand = purchased_laptop[1]
+                    laptop_price = purchased_laptop[2]
+                    laptop_quantity = purchased_laptop[3]
+                    laptop_total_price = purchased_laptop[4]
+                sale_file.write(f"| {productName:<16}| {laptop_brand:<15}|{laptop_price:>20}$ |{laptop_quantity:>15} |{laptop_total_price:>17}$ |\n")
+                sale_file.write("___________________________________________________________________________________________\n")
+                sale_file.write(f"|                                                                  Total   |{total:>17}$ |\n")
+                sale_file.write("________________________________________________________________________________________________\n")
+                sale_file.write(f"|                                                        Shipping Charge   |{shipping_cost:>17}$ |\n")
+                sale_file.write("________________________________________________________________________________________________\n")
+                sale_file.write(f"|{' '*60}Grand Total   |{grand_total:>17}$ |\n")
+                sale_file.write("________________________________________________________________________________________________\n")
+                sale_file.write(f"|{' '*32}Thank you, Please visit again!{' '*32}|\n")
+                sale_file.write("________________________________________________________________________________________________\n")
+                break
+
+
+        print('''
+                    ________________________________________________
+                    |    Selling process completed Successfully.   |
+                    ________________________________________________\n\n
+                    ''')
+        print(f"The invoice is created and stored in Sold_To_{clientName}.txt.\n\n")
+        with open('files.txt', 'w') as f:
+            for row in deviceDetails:
+                f.write(','.join(row[1:]) + '\n')
+                                
+        return
+  
+
+ 
+
+
+
+
 
 
                 
